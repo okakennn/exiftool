@@ -16,13 +16,13 @@ FONT_OPACITY = 100 #フォント透明度
 FONT_COLOR_WHITE = (255, 255, 255) #フォントカラー（白）
 FONT_COLOR_BLACK = (0, 0, 0) #フォントカラー（黒）
 
-PHOTOGRAPHER_NAME = 'okaken'
+PHOTOGRAPHER_NAME = 'okaken' #your name
 
-CAMERA_NAME_LIST = './cameraNameList.json'
-LENS_NAME_LIST = './lensNameList.json'
+CAMERA_NAME_LIST = './cameraNameList.json' #カメラ名リストjsonパス
+LENS_NAME_LIST = './lensNameList.json' #レンズ名リストjsonパス
 
-OUTPUT_FILE_PREFIX = 'ex_'
-OUTPUT_QUALITY = 100
+OUTPUT_FILE_PREFIX = 'ex_' #出力ファイル名プレフィックス
+OUTPUT_QUALITY = 100 #出力ファイル書き出し画質
 
 class ExifDataObj(object):
     # Exifデータ格納用オブジェクト
