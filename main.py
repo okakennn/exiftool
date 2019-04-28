@@ -7,13 +7,22 @@ from PIL.ExifTags import TAGS, GPSTAGS
 
 STANDARD_HEIGHT_HORIZONTAL = 4000 #横向き写真の基準縦ピクセル
 STANDARD_HEIGHT_VERTICAL = 6000 #縦向き写真の基準縦ピクセル
+
 MARGIN = 30 #基準マージン
+
 FONT_PATH = './var/fonts/SourceHanSansJP-Normal.otf' #フォントパス
 FONT_SIZE = 60 #基準フォントサイズ
 FONT_OPACITY = 100 #フォント透明度
 FONT_COLOR_WHITE = (255, 255, 255) #フォントカラー（白）
 FONT_COLOR_BLACK = (0, 0, 0) #フォントカラー（黒）
+
+PHOTOGRAPHER_NAME = 'okaken'
+
 CAMERA_NAME_LIST = './cameraNameList.json'
+LENS_NAME_LIST = './lensNameList.json'
+
+OUTPUT_FILE_PREFIX = 'ex_'
+OUTPUT_QUALITY = 100
 
 class ExifDataObj(object):
     # Exifデータ格納用オブジェクト
@@ -67,26 +76,33 @@ def detect_camera_name(model): #カメラ名リストを読み込み、型番か
         return model
 
 
+def detect_lens_name(lensModel): #レンズ名リストを読み込み、型番からレンズ名を返す
+    f = open(LENS_NAME_LIST, 'r')
+    lensNameList = json.load(f)
+    if(lensModel in lensNameList):
+        return lensNameList[lensModel]["name"]
+    else: #リストに該当するモデルが存在しないとき
+        return lensModel     
+
+
 argvs = sys.argv 
 my_img = argvs[1] #引数から写真のパスを取得
 exifData = get_exif(my_img)
-#書き込み文字列整理 ex)ILCE-7M2, FE 24-105mm F4 G OSS, 1/2000, f/4.0, ISO100
-ExifStr = detect_camera_name(exifData.Model) + ", " + exifData.LensModel + ", " \
-        + exifData.ExposureTime + "s, f/" + exifData.FNumber + ", ISO" \
-            + exifData.ISOSpeedRatings + ", Photo by okaken"
+ExifStr = detect_camera_name(exifData.Model) + ", " + detect_lens_name(exifData.LensModel) + ", " \
+        + exifData.ExposureTime + ", f/" + exifData.FNumber + ", ISO" \
+            + exifData.ISOSpeedRatings + ", Photo by " + PHOTOGRAPHER_NAME
 
 base = Image.open(my_img).convert('RGBA')
-# print(detect_camera_name(exifData.Model))
-
 txt = Image.new('RGBA', base.size, (255, 255, 255, 0))
 draw = ImageDraw.Draw(txt)
 font = ImageFont.truetype(font=FONT_PATH, size=FONT_SIZE)
 textw, texth = draw.textsize(ExifStr, font=font)
+
 #左隅に文字を書き込む
 draw.text((MARGIN, base.height - texth - MARGIN),ExifStr, font=font, fill=FONT_COLOR_WHITE + (FONT_OPACITY,))
 out = Image.alpha_composite(base, txt)
 out = out.convert('RGB')
 
-#ファイル名にex_を付与してJPG書き出し
-outFileName = 'ex_' + os.path.basename(my_img)
-out.save(os.path.dirname(my_img) + '/' + outFileName, 'JPEG', quality=95, optimize=True)
+#JPG書き出し
+outFileName = OUTPUT_FILE_PREFIX + os.path.basename(my_img)
+out.save(os.path.dirname(my_img) + '/' + outFileName, 'JPEG', quality=OUTPUT_QUALITY, optimize=True)
