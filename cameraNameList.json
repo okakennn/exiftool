@@ -1,0 +1,38 @@
+{
+    "ILCE-7":{ 
+        "maker": "Sony",
+         "name": "α7" 
+    },
+    "ILCE-7R":{ 
+        "maker": "Sony",
+         "name": "α7R" 
+    },
+    "ILCE-7S":{ 
+        "maker": "Sony",
+         "name": "α7S" 
+    },
+    "ILCE-7M2":{ 
+        "maker": "Sony",
+         "name": "α7 II" 
+    },
+    "ILCE-7RM2":{ 
+        "maker": "Sony",
+         "name": "α7R II" 
+    },
+    "ILCE-7SM2":{ 
+        "maker": "Sony",
+         "name": "α7S II" 
+    },
+    "ILCE-7M3":{ 
+        "maker": "Sony",
+         "name": "α7 III" 
+    },
+    "ILCE-7RM3":{ 
+        "maker": "Sony",
+         "name": "α7R III" 
+    },
+    "ILCE-9":{ 
+        "maker": "Sony",
+         "name": "α9" 
+    }
+}
