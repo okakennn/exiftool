@@ -60,11 +60,11 @@ def get_exif(filePath):#指定されたjpgのExifを取得
     return exifData
 
 
-def is_vertical_composition(image): #写真が縦構図であればTrue
+def get_fontsize_by_composition(image): #フォントサイズを決定
     if(image.height > image.width):
-        return True
+        return int(FONT_SIZE * image.height / STANDARD_HEIGHT_VERTICAL)
     else:
-        return False
+        return int(FONT_SIZE * image.height / STANDARD_HEIGHT_HORIZONTAL)
 
 
 def detect_camera_name(model): #カメラ名リストを読み込み、型番からカメラ名を返す
@@ -95,7 +95,7 @@ ExifStr = detect_camera_name(exifData.Model) + ", " + detect_lens_name(exifData.
 base = Image.open(my_img).convert('RGBA')
 txt = Image.new('RGBA', base.size, (255, 255, 255, 0))
 draw = ImageDraw.Draw(txt)
-font = ImageFont.truetype(font=FONT_PATH, size=FONT_SIZE)
+font = ImageFont.truetype(font=FONT_PATH, size=get_fontsize_by_composition(base))
 textw, texth = draw.textsize(ExifStr, font=font)
 
 #左隅に文字を書き込む
